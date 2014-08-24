@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>CRUD | codeigniter-base-model</title>
+
+<style type='text/css' media='all'>@import url('./userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<script src="js/jquery.min.js"></script>
+<script src="js/nav.js"></script>
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner">
+        <script>
+create_menu('null');
+        </script>
+</div></div>
+<div id="nav2"><a name="top">&nbsp;</a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>Dokumentacja</h1></td>
+<td id="breadcrumb_right"></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="https://github.com/jamierumbelow/codeigniter-base-model">codeigniter-base-model</a> &nbsp;&#8250;&nbsp;
+<a href="index.html">Dokumentacja</a> &nbsp;&#8250;&nbsp;
+CRUD
+</td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+
+<h1>codeigniter-base-model</h1>
+<h2>CRUD</h2>
+<a name="get"></a>
+<h2>Pobieranie danych</h2>
+<h3>get()</h3>
+<p>Pobiera pojedynczy rekord na podstawie klucza głównego tabeli. Zwraca obiekt.
+<pre>
+$this->post_model->get(2); //pobiera <b>pojedyńczy</b> post o id=2 z tabeli posts
+</pre>
+<h3>get_by()</h3>
+<p>Pobiera pojedyńczy rekord z zastosowaniem klauzuli WHERE. Argumentem może być każda ważna wartość dla funkcji $this->db->where().
+<pre>
+$this->post_model->get_by('title','Ciekawy post'); //pobiera <b>pojedyńczy</b> post o tytule Ciekawy post=2
+
+$where=array('author'=>'john','status'=>'sticky');
+$this->post_model->get_by($where); //pobiera <b>pojedyńczy</b> post autora John'a o statusie "sticky"
+</pre>
+<h3>get_many()</h3>
+<p>Pobiera tablicę rekordów w oparciu o tablicę kluczy głównych.
+<pre>
+$ids=array(1,4,8);
+$this->post_model->get_many($ids);
+</pre>
+<h3>get_many_by()</h3>
+<p>Pobiera tablicę rekordów na podstawie zapytania WHERE.
+<pre>
+$where=array('authoer'=>'Joe');
+$this->post_model->get_many_by($where);
+</pre>
+<h3>get_all()</h3>
+<p>Pobiera wszystkie rekordy do tablicy.
+<pre>
+$this->post_model->get_all();
+</pre>
+<a name="insert"></a>
+<h2>Dodawanie danych</h2>
+<h3>insert()</h3>
+<p>Dodaje rekord do bazy. <var>$data</var> powinno być tablicą asocjacyjną. Zwraca ID nowo utworzonego rekordu.
+<pre>
+<var>$data</var>=array('title'=>'Fajny film wczoraj widziałem','description'=>'Relacja z wczorajszego seansu filmowego','author'=>'John');
+<var>$last_insert_id</var>=$this->post_model->insert(<var>$data</var>);
+</pre>
+<h3>insert_many()</h3>
+<p>Pozwala na dodanie wielu rekordów do tablicy, zwraca tablicę zawierającą ID wszystkich dodanych rekordów.
+<pre>
+<var>$data</var>=array(
+    array('title'=>'Fajny film wczoraj widziałem','description'=>'Relacja z wczorajszego seansu filmowego','author'=>'John'),
+    array('title'=>'Całkiem z innej beczki','description'=>'Inna tematyka tego postu','author'=>'George')
+    );
+<var>$last_insert_ids</var>=$this->post_model->insert_many(<var>$data</var>);
+var_dump($last_insert_id);
+</pre>
+<a name="update"></a>
+<h2>Poprawianie danych</h2>
+<a name="delete"></a>
+<h2>Kasowanie danych</h2>
+<a name="truncate"></a>
+<h2>Opróżnianie tablicy</h2>
+<h3>truncate()</h3>
+<p>Opróżnia tabelę.
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#">User Guide Home</a>
+</p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006 - 2014 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">EllisLab, Inc.</a></p>
+</div>
+
+</body>
+</html>

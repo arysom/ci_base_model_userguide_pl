@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>codeigniter-base-model</title>
+
+<style type='text/css' media='all'>@import url('./userguide.css');</style>
+<link rel='stylesheet' type='text/css' media='all' href='../userguide.css' />
+
+<meta http-equiv='expires' content='-1' />
+<meta http-equiv= 'pragma' content='no-cache' />
+<meta name='robots' content='all' />
+<script src="js/jquery.min.js"></script>
+<script src="js/nav.js"></script>
+
+</head>
+<body>
+
+<!-- START NAVIGATION -->
+<div id="nav"><div id="nav_inner">
+        <script>
+create_menu('null');
+        </script>
+</div></div>
+<div id="nav2"><a name="top">&nbsp;</a><a id="toggle_toc" href="#"><img width="154" height="43" border="0" alt="Toggle Table of Contents" title="Toggle Table of Contents" src="images/nav_toggle_darker.png"></a></div>
+<div id="masthead">
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td><h1>Dokumentacja</h1></td>
+<td id="breadcrumb_right"></td>
+</tr>
+</table>
+</div>
+<!-- END NAVIGATION -->
+
+
+<!-- START BREADCRUMB -->
+<table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+<tr>
+<td id="breadcrumb">
+<a href="https://github.com/jamierumbelow/codeigniter-base-model">codeigniter-base-model</a> &nbsp;&#8250;&nbsp;
+Dokumentacja
+</td>
+</tr>
+</table>
+<!-- END BREADCRUMB -->
+
+<br clear="all" />
+
+
+<!-- START CONTENT -->
+<div id="content">
+
+
+<h1>codeigniter-base-model</h1>
+<p>
+Codeigniter Base Model to klasa, która rozszerza podstawową klasę modelu w Codeigniterze, czyli CI_Model. Zawiera pełny zakres funkcji CRUD do szybkich interakcji z bazami danych a także system obserwatorów, walidację danych w modelu, inteligentne odgadywanie nazw tabli oraz miękkie kasowanie rekordów.
+</p>
+
+<a name="installation"></a>
+<h2>Instalacja</h2>
+<p>1. Ściągnij najnowszą wersję biblioteki z <a href="https://raw.githubusercontent.com/jamierumbelow/codeigniter-base-model/master/core/MY_Model.php">https://raw.githubusercontent.com/jamierumbelow/codeigniter-base-model/master/core/MY_Model.php</a>
+
+<p>2. Umieść plik w katalogu <samp>application/core</samp> . Klasa będzie uruchamiać się automatycznie.
+
+<a name="usage"></a>
+<h2>Zastosowanie</h2>
+
+<p>Aby nasze modele od razu otrzymały funkcjonalności zawarte w Codeigniter Base Model wystarczy rozszerzyć nasze modele o MY_Model, zamiast jak do tej pory o CI_Model.
+
+<pre>
+&lt;?php
+class Page_model extends MY_Model
+{
+}
+
+// Lokalizacja: application/models/page_model.php
+</pre>
+
+<p>Następnie w kontrolerze ładujemy plik modelu i odwołujemy się do odpowiedniej metody lub łączymy parę metod w całość.
+<pre>
+&lt;?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+class Welcome extends CI_Controller {
+
+    function __construct()
+    {
+        parent::__construct();
+        $this->load->model('page_model');
+    }
+
+    public function index()
+    {
+        $data['pages']=$this->page_model->order_by('created_at','desc')->get_all();
+        $this->load->view('welcome_message',$data);
+    }
+}
+
+/* Lokalizacja: ./application/controllers/welcome.php */
+</pre>
+
+<p>Z kolei w widoku wyświetlamy pobrane dane.
+<pre>
+&lt;?php 
+foreach($pages as $value){
+    echo $value->title;
+    echo $value->description;
+}
+/* Lokalizacja: ./application/views/welcome-message.php */
+</pre>
+
+</div>
+<!-- END CONTENT -->
+
+
+<div id="footer">
+<p>
+<a href="#top">Top of Page</a>&nbsp;&nbsp;&nbsp;&middot;&nbsp;&nbsp;
+<a href="#">User Guide Home</a>
+</p>
+<p><a href="http://codeigniter.com">CodeIgniter</a> &nbsp;&middot;&nbsp; Copyright &#169; 2006 - 2014 &nbsp;&middot;&nbsp; <a href="http://ellislab.com/">EllisLab, Inc.</a></p>
+</div>
+
+<script>
+$(document).ready(function(){
+        $("#nav").hide();
+ $("#toggle_toc").click(function(){
+  $("#nav").slideToggle();
+});      
+ });
+</script>
+</body>
+</html>
