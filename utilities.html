@@ -60,26 +60,55 @@ Metody użytkowe
 <a name="dropdown"></a>
 <h2>dropdown()</h2>
 <p>Pobiera dane z tabeli i generuje tablicę przyjazną funkcji form_dropdown
+<pre>
+//w kontrolerze
+$this->load->helper('form');
+$data['dropdown']=$this->pages->dropdown('title');
+
+//w widoku
+ echo form_dropdown('pages', $dropdown, set_value('pages'));
+</pre>
 
 <a name="count_by"></a>
 <h2>count_by()</h2>
 <p>Pobiera ilość wyników na podstawie zapytania WHERE.
+<pre>
+$this->post_model->count_by('status','draft');
+</pre>
 
 <a name="count_all"></a>
 <h2>count_all()</h2>
 <p>Pobiera wszystkie wyniki, bez względu na poprzednie warunki.
+<pre>
+$ilu=$this->author_model->count_all();
+</pre>
 
 <a name="skip_validation"></a>
 <h2>skip_validation()</h2>
 <p>Mówi klasie,żeby nie walidowała danych przy wprowadzaniu.
+<pre>
+$this->user_model->skip_validation();
+$this->user_model->insert(array( 'email' => 'blah' ));
+</pre>
+Alternatively, pass through a TRUE to insert():
+<p>Możesz także ominąć walidację dodając parametr TRUE przy dodawaniu rekordu:
+<pre>
+$this->user_model->insert(array( 'email' => 'blah' ), TRUE);
+</pre>
 
 <a name="get_next_id"></a>
 <h2>get_next_id()</h2>
 <p>Zwraca następną wartość autoinkrementacji tabeli. Funkcja testowna wyłącznie w MySql.
+<pre>
+$next_id=$this->post_model->get_next_id();
+</pre>
 
 <a name="table"></a>
 <h2>table()</h2>
 <p>Pobiera nazwę tabeli.
+<pre>
+$table_name=$this->author_model->table();
+</pre>
 
 </div>
 <!-- END CONTENT -->

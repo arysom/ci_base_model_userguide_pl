@@ -56,7 +56,102 @@ Tematy ogólne
 
 <h1>codeigniter-base-model</h1>
 <h2>Tematy ogólne</h2>
+<a name="naming"></a>
+<h3>Nazewnictwo</h3>
+<p>Klasa sama rozpoznaje nazwę tabeli poprzez utowrzenie formy mnogiej od nazwy klasy modelu.
+<p>W poniższym przykładzie:
+<pre>
+class Post_model extends MY_Model{  }
+</pre>
+<p>nazwą tabeli będzie <b>posts</b>. Działa to także z modelami z _m w nazwie:
+<pre>
+class Book_m extends MY_Model{  }
+</pre>
+<p>W tym przypadku nazwą tabeli będzie <b>books</b>.
+<p>Jeśli chcesz by tabela nazywała się inaczej możesz określić to w klasie modelu za pomocą zmiennej <var>$_table</var>:
+<pre>
+class Post_model extends MY_Model
+{
+    public $_table = 'blogposts';
+}
+</pre>
+<p>Niektóre funkcje CRUD przyjmują, że w tablicy kolumna zawierająca klucze główne nazywa się <b>id</b>. Możesz zmienić to zachowanie deklarując <var>$primary_key</var> wewnątrz klasy swojego modelu:
+<pre>
+class Post_model extends MY_Model
+{
+    public $primary_key = 'post_id';
+}
+</pre>
 
+<a name="relations"></a>
+<h3>Obsługa relacji</h3>
+<p>MY_Model wspiera obsługę podstawowych relacji <i>belongs_to(należy do)</i> i <i>has_many(posiada wiele)</i>. Te relacje można łatwo zdefiniować:
+<pre>
+class Post_model extends MY_Model
+{
+    public $belongs_to = array( 'author' );
+    public $has_many = array( 'comments' );
+}
+</pre>
+<p>Można przyjąć,że w klasie z API-kompatybilnym MY_model zdefiniowaliśmy pożądaną relację. Domyślnie będzie to więc model <b>relacja_model</b>. Poniższy przykład odnosi się do dwóch innych modeli:
+<pre>
+class Author_model extends MY_Model { }
+class Comment_model extends MY_Model { }
+</pre>
+<p>Jeśli chcesz zmienić nazwy modeli, do których odnosi się relacja możesz podać dodatkowe parametry:
+<pre>
+class Post_model extends MY_Model
+{
+    public $belongs_to = array( 'author' => array( 'model' => 'author_m' ) );
+    public $has_many = array( 'comments' => array( 'model' => 'model_comments' ) );
+}
+</pre>
+<p>Gdy już określisz relacje w modelach, możesz wszystko połączyć w całość za pomocą metody with();
+<pre>
+$post = $this->post_model->with('author')
+                         ->with('comments')
+                         ->get(1);
+</pre>
+<p>Dane z połączonych ze sobą tabel zostaną dodane do wartości zwróconej przez <b>get()</b>.
+<pre>
+echo $post->author->name;
+
+foreach ($post->comments as $comment)
+{
+    echo $comment->$message;
+}
+</pre>
+<p>Powstaną oddzielne zapytania, więc gdy szybkość jest ważna, zalecane są oddzielne zapytania JOIN i SELECT.
+<p>Można także skonfigurować klucze główne inaczej. Tak by relacja dla <i>belongs_to</i> następowała w tym samym obiekcie, nie obcym. Pseudokod:
+<pre>
+SELECT * FROM authors WHERE id = $post->author_id
+</pre>
+...a tutaj dla <i>has_many</i>:
+<pre>
+SELECT * FROM comments WHERE post_id = $post->id
+</pre>
+<p>By zmienić użycie <b>klucza głównego</b> można użyć następującej konfiguracji:
+<pre>
+class Post_model extends MY_Model
+{
+    public $belongs_to = array( 'author' => array( 'primary_key' => 'post_author_id' ) );
+    public $has_many = array( 'comments' => array( 'primary_key' => 'parent_post_id' ) );
+}
+</pre>
+<a name="callbacks"></a>
+<h3>Obserwatory i funckje zwrotne</h3>
+
+<a name="validation"></a>
+<h3>Walidacja</h3>
+
+<a name="protected"></a>
+<h3>Zabezpieczone atrybuty</h3>
+
+<a name="array_vs_objects"></a>
+<h3>Tablice vs obiekty</h3>
+
+<a name="soft_delete"></a>
+<h3>Miękkie kasowanie</h3>
 </div>
 <!-- END CONTENT -->
 
