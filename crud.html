@@ -108,8 +108,22 @@ var_dump($last_insert_id);
 </pre>
 <a name="update"></a>
 <h2>Poprawianie danych</h2>
+<h3>update()</h3>
+<p>Poprawia rekord na podstawie klucza głównego.
+<h3>update_many()</h3>
+<p>Poprawia wiele rekordów na podstawie tablicy zawierającej klucze główne.
+<h3>update_by()</h3>
+<p>Poprawia pojedyńczy rekord na podstawie zapytania WHERE.
+<h3>update_all()</h3>
+<p>Poprawia wszystkie rekordy.
 <a name="delete"></a>
 <h2>Kasowanie danych</h2>
+<h3>delete()</h3>
+<p>Kasuje jeden rekord z tabeli na podstawie klucza głównego.
+<h3>delete_by()</h3>
+<p>Kasuje rekord z tabeli na podstawie zapytania WHERE.
+<h3>delete_many()</h3>
+<p>Kasuje wiele rekordów na podstawie tablicy z wieloma kluczami głównymi.
 <a name="truncate"></a>
 <h2>Opróżnianie tablicy</h2>
 <h3>truncate()</h3>
