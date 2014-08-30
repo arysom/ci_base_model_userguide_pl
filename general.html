@@ -140,6 +140,44 @@ class Post_model extends MY_Model
 </pre>
 <a name="callbacks"></a>
 <h3>Obserwatory i funckje zwrotne</h3>
+<p>Wiele razy możesz potrzebować zmienić swoje dane przed dodaniem lub przed ich pobraniem. Może to być dodanie daty i godziny, sprawdzenie relacji lub skasowanie zależnych rekordów. Standardy przy używaniu wzorca MVC sugerują, że tego typu czynności powinny dziać się w modelu. W celu podążenia za tym MY_Model zawiera serię funkcji zwrotnych i obserwatorów, metod, które są wywoływane w odpowiednim momencie.
+<p>Oto ich pełna lista:
+<ul>
+    <li>$before_create</li>
+    <li>$after_create</li>
+    <li>$before_update</li>
+    <li>$after_update</li>
+    <li>$before_get</li>
+    <li>$after_get</li>
+    <li>$before_delete</li>
+    <li>$after_delete</li>
+</ul>
+<p>Instancje tych zmiennych są zazwyczaj definiowane na poziomie klasy. Są to tablice zawierające metody klasy modelu uruchamiane w określonych przypadkach. Na przykład:
+<pre>
+class Book_model extends MY_Model
+{
+    public $before_create = array( 'timestamps' );
+
+    protected function timestamps($book)
+    {
+        $book['created_at'] = $book['updated_at'] = date('Y-m-d H:i:s');
+        return $book;
+    }
+}
+</pre>
+<p class="important">Pamiętaj by zawsze zawsze zawsze zwrócić <var>$row</var> obiektu, który został przekazany do funkcji. Każdy obserwator nadpisuje dane swojego poprzednika w kolejności chronologicznej, czyli po kolei, tak jak umieszczone są obserwatory.
+<p>Obserwatory mogą także przyjmować paramtery w swoich nazwach, tak jak biblioteka Codeigniter Form Validation. Te parametry są później dostępne w zmiennej <var>$this->callback_parameters</var>:
+<pre>
+public $before_create = array( 'data_process(name)' );
+public $before_update = array( 'data_process(date)' );
+
+protected function data_process($row)
+{
+    $row[$this->callback_parameters[0]] = $this->_process($row[$this->callback_parameters[0]]);
+
+    return $row;
+}
+</pre>
 
 <a name="validation"></a>
 <h3>Walidacja</h3>
