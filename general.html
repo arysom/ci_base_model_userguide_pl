@@ -152,6 +152,42 @@ class Post_model extends MY_Model
 
 <a name="soft_delete"></a>
 <h3>Miękkie kasowanie</h3>
+<p>Domyślnie mechanizm kasowania działa za pomocą funckji delete z języka SQL. Jednak istnieje prawdopodobieństwo, że nie chcesz całkowicie usunąć swoich danych, zamiast tego możesz wykonać tzw. 'miękkie kasowanie'.</p>
+<p>Jeśli zezwolisz w modelu na miękkie kasowanie, rekord będzie oznaczony jako <i>skasowany</i> i pozostanie w bazie.</p>
+<p>Oto przykład modelu:</p>
+<pre>
+class Book_model extends MY_Model {  }
+</pre>
+<p>Możemy uruchomić opcję miękkiego kasowania poprzez dodanie klucza $this->soft_delete:</p>
+<pre>
+class Book_model extends MY_Model 
+{
+    protected $soft_delete=TRUE;
+}
+</pre>
+<p>Domyślnie MY_Model oczekuje zmiennej typu TINYINT lub INT i kolumny o nazwie 'deleted'. Jeśli chcesz, możesz zmienić nazwę kolumny, do której odnosi się model za pomocą $soft_delete_key:</p>
+<pre>
+class Book_model extends MY_Model
+{ 
+    protected $soft_delete = TRUE;
+    protected $soft_delete_key = 'book_deleted_status';
+}
+</pre>
+<p>Od teraz gdy używasz metod zaczynających się od get_ w zapytaniu pojawi się część nakazująca pobieranie rekordów, które nie zostały skasowane: </p>
+<pre>
+=> $this->book_model->get_by('user_id', 1);
+-> SELECT * FROM books WHERE user_id = 1 AND deleted = 0
+</pre>
+<p>Jeśli jednak chcesz uzyskać wszystkie rekordy włącznie z tymi skasowanymi, możesz użyć funkcji with_deleted():
+<pre>
+=> $this->book_model->with_deleted()->get_by('user_id', 1);
+-> SELECT * FROM books WHERE user_id = 1
+</pre>
+<p>Możesz równieć uzyskać wyłącznie rekordy skasowane za pomocą funkcji only_deleted():
+<pre>
+=> $this->book_model->only_deleted()->get_by('user_id', 1);
+-> SELECT * FROM books WHERE user_id = 1 AND deleted = 1
+</pre>
 </div>
 <!-- END CONTENT -->
 
