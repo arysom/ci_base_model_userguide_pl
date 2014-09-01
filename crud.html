@@ -104,30 +104,72 @@ $this->post_model->get_all();
     array('title'=>'Całkiem z innej beczki','description'=>'Inna tematyka tego postu','author'=>'George')
     );
 <var>$last_insert_ids</var>=$this->post_model->insert_many(<var>$data</var>);
-var_dump($last_insert_id);
 </pre>
 <a name="update"></a>
 <h2>Poprawianie danych</h2>
 <h3>update()</h3>
 <p>Poprawia rekord na podstawie klucza głównego.
+<pre>
+$id=$this->uri->segment(3);
+$data=array(
+    'author' => 'John',
+    'status' => 'ready'
+);
+$this->post_model->update($id,$data);
+</pre>
 <h3>update_many()</h3>
 <p>Poprawia wiele rekordów na podstawie tablicy zawierającej klucze główne.
+<pre>
+$ids=array(3,5,9);
+$data=array(
+    'author' => 'John'
+);
+$this->post_model->update_many($id,$data);
+</pre>
 <h3>update_by()</h3>
 <p>Poprawia pojedyńczy rekord na podstawie zapytania WHERE.
+<pre>
+$where=array('title','O nas');
+$data=array(
+    'author' => 'John'
+);
+$this->post_model->update_by($where,$data);
+</pre>
 <h3>update_all()</h3>
 <p>Poprawia wszystkie rekordy.
+<pre>
+$data=array(
+    'author' => 'John'
+);
+$this->post_model->update_all($data);
+</pre>
 <a name="delete"></a>
 <h2>Kasowanie danych</h2>
 <h3>delete()</h3>
 <p>Kasuje jeden rekord z tabeli na podstawie klucza głównego.
+<pre>
+$id=$this->uri->segment(3);
+$this->post_model->update($id);
+</pre>
 <h3>delete_by()</h3>
 <p>Kasuje rekord z tabeli na podstawie zapytania WHERE.
+<pre>
+$where=array('title','O nas');
+$this->post_model->delete_by($where);
+</pre>
 <h3>delete_many()</h3>
 <p>Kasuje wiele rekordów na podstawie tablicy z wieloma kluczami głównymi.
+<pre>
+$ids=array(3,5,9);
+$this->post_model->delete_many($ids);
+</pre>
 <a name="truncate"></a>
 <h2>Opróżnianie tablicy</h2>
 <h3>truncate()</h3>
 <p>Opróżnia tabelę.
+<pre>
+$this->post_model->truncate();
+</pre>
 </div>
 <!-- END CONTENT -->
 
