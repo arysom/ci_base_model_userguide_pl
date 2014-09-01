@@ -178,16 +178,90 @@ protected function data_process($row)
     return $row;
 }
 </pre>
-
+<a name="callbacks_builtin"></a>
+<h3>Wbudowane obserwatory</h3>
+<p><b>MY_Model</b> zawiera kilka wbudowanych obserwatorów, które autor uznał za często wykorzystywane w swoich modelach.
+<p>Znaczniki czasu (kompatybline z MySql) 'created_at' i 'updated_at' są dostępne od razu:
+<pre>
+class Post_model extends MY_Model
+{
+    public $before_create = array( 'created_at', 'updated_at' );
+    public $before_update = array( 'updated_at' );
+}
+</pre>
+<p><b>MY_Model</b> zawiera także obserwatory, które serializują i odczytują z powrotem natywne obiekty PHP. Ta funkcja pozwala na przechowywanie skomplikowanych struktur takich, jak tablice i obiekty i automatycznie serializować je w tle. Obserwatory 'serialize' i 'unserialize' uruchamia się dodając nazwę kolumny jako parametr:
+<pre>
+class Event_model extends MY_Model
+{
+    public $before_create = array( 'serialize(seat_types)' );
+    public $before_update = array( 'serialize(seat_types)' );
+    public $after_get = array( 'unserialize(seat_types)' );
+}
+</pre>
 <a name="validation"></a>
 <h3>Walidacja</h3>
+<p>MY_Model używa wbudowanej klasy form validation w celu zweryfikowania danych przed dodaniem.
+<p>Walidację można uruchomić poprzez ustanownienie zmiennej '$validate' z zestawami reguł w formie tablic, tak jak w klasie codeigniter'a:
+<pre>
+class User_model extends MY_Model
+{
+    public $validate = array(
+        array( 'field' => 'email', 
+               'label' => 'email',
+               'rules' => 'required|valid_email|is_unique[users.email]' ),
+        array( 'field' => 'password',
+               'label' => 'password',
+               'rules' => 'required' ),
+        array( 'field' => 'password_confirmation',
+               'label' => 'confirm password',
+               'rules' => 'required|matches[password]' ),
+    );
+}
+</pre>
+<p>Wszystko, co działa w bibliotece 'form validation' może być wykorzystane także tutaj. Aby dowiedzieć się więcej na temat reguł należy przeczytać <a href="http://podrecznik.codeigniter.org.pl/libraries/form_validation.html#rulereference">odpowiedni rozdział</a> z podręcznika CI.
+<p>Z taką ustanowioną tablicą zasad każde dodanie lub poprawienie będzie sprawdzało poprawność danych przed wykonaniem zapytania. <b>W przeciwieństwie do biblioteki form validation CI, MY_Model nie sprawdza danych typu POST, a raczej dane przekazywane bezpośrednio do modelu.</b>
+    <p> Walidację można ominąć za pomocą metody <a href="utilities.html#skip_validation">skip_validation()</a>.
 
 <a name="protected"></a>
 <h3>Zabezpieczone atrybuty</h3>
+<p>Dodawanie danych bezpośrednio z formularza nawet mimo podlegania walidacji może być niebezpieczne, każdy atrybut modelu może ulegać modyfikacji, włącznie z parametrem ID.
+<p>Aby zpobiec podobnym wydarzeniom MY_Model wspiera zastrzeżone atrybuty. To dane w kolumnach, które nie mogą być modyfikowane.
+<p>Aby włączyć zabezpieczone atrybuty, należy dodać do modelu tablicę '$protected_attributes':
+<pre>
+class Post_model extends MY_Model
+{
+    public $protected_attributes = array( 'id', 'hash' );
+}
+</pre>
+<p>Od teraz przy każdym dodawaniu lub poprawianiu danych, podane zmienne będą automatycznie usuwane z tablicy danych:
+<pre>
+$this->post_model->insert(array(
+    'id' => 2,
+    'hash' => 'aqe3fwrga23fw243fWE',
+    'title' => 'A new post'
+));
 
+// SQL: INSERT INTO posts (title) VALUES ('A new post')
+</pre>
 <a name="array_vs_objects"></a>
 <h3>Tablice vs obiekty</h3>
-
+<p>Domyślnie MY_Model zwraca obiekt używając metod Codeigniter'a row() i reslut(). Jeśli jednak chcesz zwrócić tablicę a nie obiekt, istnieje kilka sposobów, aby tego dokonać.
+<p>Jeśli chcesz, aby wszystkie twoje zapytania używały metod zwracających tablicę możesz ustawić w modelu zmienną '$return_type' jako 'array'.
+<pre>
+class Book_model extends MY_Model
+{
+    protected $return_type = 'array';
+}
+</pre>
+<p>
+Jeśli chcesz zmienić rodzaj zwracanych danych tylko w następnym zapytaniu, istnieją dwie metody, którymi możesz się posłużć:
+<pre>
+$this->book_model->as_array()
+                 ->get(1);
+$this->book_model->as_object()
+                 ->get_by('column', 'value');
+</pre>
+</p>
 <a name="soft_delete"></a>
 <h3>Miękkie kasowanie</h3>
 <p>Domyślnie mechanizm kasowania działa za pomocą funckji delete z języka SQL. Jednak istnieje prawdopodobieństwo, że nie chcesz całkowicie usunąć swoich danych, zamiast tego możesz wykonać tzw. 'miękkie kasowanie'.</p>

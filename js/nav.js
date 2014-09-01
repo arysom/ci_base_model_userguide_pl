@@ -28,6 +28,7 @@ function create_menu(basepath)
 			'<li><a href="'+base+'general.html#naming">Nazewnictwo</a></li>' +
 			'<li><a href="'+base+'general.html#relations">Obsługa relacji</a></li>' +
 			'<li><a href="'+base+'general.html#callbacks">Obserwatory i funkcje zwrotne</a></li>' +
+			'<li><a href="'+base+'general.html#callbacks_builtin">Wbudowane obserwatory</a></li>' +
 			'<li><a href="'+base+'general.html#validation">Walidacja</a></li>' +
 			'<li><a href="'+base+'general.html#protected">Zabezpieczone atrybuty</a></li>' +
 			'<li><a href="'+base+'general.html#arrays_vs_objects">Tablice vs obiekty</a></li>' +
